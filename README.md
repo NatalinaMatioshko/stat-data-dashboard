@@ -2,6 +2,10 @@
 
 A simple frontend MVP dashboard built with React, Vite, Tailwind CSS, and Chart.js.
 
+## 🚀 Live Demo
+
+- [Live Demo on Vercel](https://stat-data-dashboard.vercel.app/)
+
 ## Overview
 
 This project is a demo statistical dashboard for exploring mock public data by:
@@ -10,19 +14,7 @@ This project is a demo statistical dashboard for exploring mock public data by:
 - region
 - indicator
 
-It includes filters, KPI cards, a bar chart, and a responsive data table.
-
-## Live Demo
-
-https://stat-data-dashboard.vercel.app/
-
-## Tech Stack
-
-- React
-- Vite
-- Tailwind CSS
-- Chart.js
-- react-chartjs-2
+It includes filters, KPI cards, a bar chart, a responsive data table, and bilingual UI support.
 
 ## Features
 
@@ -34,6 +26,24 @@ https://stat-data-dashboard.vercel.app/
 - Active filter chips
 - Empty state with reset action
 - Responsive demo layout
+- English / Ukrainian language switcher
+
+## Language Support
+
+The interface supports:
+
+- English
+- Ukrainian
+
+Users can switch the UI language directly from the dashboard header.
+
+## Tech Stack
+
+- React
+- Vite
+- Tailwind CSS
+- Chart.js
+- react-chartjs-2
 
 ## Project Structure
 
@@ -83,11 +93,11 @@ Each record includes:
 
 ## Deployment
 
-This project can be deployed easily on Vercel.
+This project is deployed on Vercel.
 
-Recommended build settings:
+Recommended Vercel settings:
 
-- Framework Preset: Vite
+- Framework Preset: `Vite`
 - Build Command: `npm run build`
 - Output Directory: `dist`
 

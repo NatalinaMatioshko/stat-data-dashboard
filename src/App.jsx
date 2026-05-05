@@ -3,16 +3,126 @@ import data from "./data/statData.json";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 
+const translations = {
+  en: {
+    demo: "Demo MVP",
+    concept: "Public statistics concept",
+    title: "Stat Data Dashboard",
+    subtitle:
+      "A simple frontend MVP for exploring statistical data by year, region, and indicator.",
+    years: "years",
+    regions: "regions",
+    indicators: "indicators",
+    filters: "Filters",
+    filtersDesc: "Choose a year, region, and indicator to update all widgets.",
+    reset: "Reset filters",
+    year: "Year",
+    region: "Region",
+    indicator: "Indicator",
+    all: "All",
+    allRegions: "All regions",
+    averageValue: "Average value",
+    averageRate: "Average rate",
+    averagePopulation: "Average population",
+    highestRegion: "Highest region",
+    topRegion: "Top region",
+    recordsCount: "Records count",
+    count: "Count",
+    kpi: "KPI",
+    regionalComparison: "Regional comparison",
+    chartDesc: "Main chart based on selected filters.",
+    noChartData: "No chart data available",
+    noChartDataDesc:
+      "The selected filters returned no records. Reset filters or choose another indicator.",
+    currentSelection: "Current selection",
+    currentSelectionDesc: "Active filter state for this dashboard.",
+    dataTable: "Data table",
+    tableDesc: "Filtered records sorted by value.",
+    result: "result",
+    results: "results",
+    noResults: "No results for current filters",
+    noResultsDesc:
+      "Try another year, region, or indicator, or reset filters to see all available mock data.",
+    source: "Source: demo mock data for MVP presentation.",
+    noData: "No data",
+    language: "Language",
+    value: "Value",
+    averageSalary: "Average Salary",
+    unemploymentRate: "Unemployment Rate",
+    population: "Population",
+  },
+  ua: {
+    demo: "Демо MVP",
+    concept: "Концепт публічної статистики",
+    title: "Статистичний дашборд",
+    subtitle:
+      "Простий frontend MVP для перегляду статистичних даних за роком, регіоном та індикатором.",
+    years: "роки",
+    regions: "регіони",
+    indicators: "індикатори",
+    filters: "Фільтри",
+    filtersDesc: "Оберіть рік, регіон та індикатор, щоб оновити всі віджети.",
+    reset: "Скинути фільтри",
+    year: "Рік",
+    region: "Регіон",
+    indicator: "Індикатор",
+    all: "Усі",
+    allRegions: "Усі регіони",
+    averageValue: "Середнє значення",
+    averageRate: "Середній рівень",
+    averagePopulation: "Середнє населення",
+    highestRegion: "Найвищий показник",
+    topRegion: "Топ регіон",
+    recordsCount: "Кількість записів",
+    count: "Кількість",
+    kpi: "KPI",
+    regionalComparison: "Порівняння регіонів",
+    chartDesc: "Основний графік за вибраними фільтрами.",
+    noChartData: "Немає даних для графіка",
+    noChartDataDesc:
+      "Обрані фільтри не повернули жодного запису. Скиньте фільтри або оберіть інший індикатор.",
+    currentSelection: "Поточний вибір",
+    currentSelectionDesc: "Активний стан фільтрів для цього дашборда.",
+    dataTable: "Таблиця даних",
+    tableDesc: "Відфільтровані записи, відсортовані за значенням.",
+    result: "результат",
+    results: "результатів",
+    noResults: "Немає результатів для поточних фільтрів",
+    noResultsDesc:
+      "Спробуйте інший рік, регіон або індикатор, або скиньте фільтри, щоб побачити всі доступні дані.",
+    source: "Джерело: демо-мок дані для презентації MVP.",
+    noData: "Немає даних",
+    language: "Мова",
+    value: "Значення",
+    averageSalary: "Середня зарплата",
+    unemploymentRate: "Рівень безробіття",
+    population: "Населення",
+  },
+};
+
 function App() {
+  const [lang, setLang] = useState("en");
   const [selectedYear, setSelectedYear] = useState("2024");
   const [selectedRegion, setSelectedRegion] = useState("All");
   const [selectedIndicator, setSelectedIndicator] = useState("Average Salary");
+
+  const t = (key) => translations[lang][key];
 
   const years = [...new Set(data.map((item) => item.year))].sort(
     (a, b) => b - a,
   );
   const regions = [...new Set(data.map((item) => item.region))].sort();
   const indicators = [...new Set(data.map((item) => item.indicator))].sort();
+
+  const getIndicatorLabel = (indicator) => {
+    const map = {
+      "Average Salary": t("averageSalary"),
+      "Unemployment Rate": t("unemploymentRate"),
+      Population: t("population"),
+    };
+
+    return map[indicator] || indicator;
+  };
 
   const filteredData = data
     .filter((item) => {
@@ -41,13 +151,13 @@ function App() {
       return `${Number(value).toFixed(1)}%`;
     }
 
-    return Number(value).toLocaleString();
+    return Number(value).toLocaleString(lang === "ua" ? "uk-UA" : "en-US");
   };
 
   const getKpiLabel = () => {
-    if (selectedIndicator === "Unemployment Rate") return "Average rate";
-    if (selectedIndicator === "Population") return "Average population";
-    return "Average value";
+    if (selectedIndicator === "Unemployment Rate") return t("averageRate");
+    if (selectedIndicator === "Population") return t("averagePopulation");
+    return t("averageValue");
   };
 
   const totalValue = filteredData.reduce((sum, item) => sum + item.value, 0);
@@ -63,7 +173,7 @@ function App() {
     labels: filteredData.map((item) => item.region),
     datasets: [
       {
-        label: activeIndicator,
+        label: getIndicatorLabel(activeIndicator),
         data: filteredData.map((item) => item.value),
         backgroundColor: "#2563eb",
         borderRadius: 10,
@@ -82,7 +192,10 @@ function App() {
       tooltip: {
         callbacks: {
           label: (context) =>
-            `${activeIndicator}: ${formatValue(context.raw, activeIndicator)}`,
+            `${getIndicatorLabel(activeIndicator)}: ${formatValue(
+              context.raw,
+              activeIndicator,
+            )}`,
         },
       },
     },
@@ -99,7 +212,9 @@ function App() {
             if (activeIndicator === "Unemployment Rate") {
               return `${value}%`;
             }
-            return Number(value).toLocaleString();
+            return Number(value).toLocaleString(
+              lang === "ua" ? "uk-UA" : "en-US",
+            );
           },
         },
       },
@@ -115,67 +230,96 @@ function App() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <header className="mb-8 rounded-3xl bg-linear-to-r from-slate-900 to-slate-800 p-6 text-white shadow-sm">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-200">
-              Demo MVP
-            </span>
-            <span className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-medium text-blue-200">
-              Public statistics concept
-            </span>
-          </div>
+        <header className="mb-8 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-200">
+                  {t("demo")}
+                </span>
+                <span className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-medium text-blue-200">
+                  {t("concept")}
+                </span>
+              </div>
 
-          <div className="mt-4">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Stat Data Dashboard
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-300 sm:text-base">
-              A simple frontend MVP for exploring statistical data by year,
-              region, and indicator.
-            </p>
-          </div>
+              <div className="mt-4">
+                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                  {t("title")}
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm text-slate-300 sm:text-base">
+                  {t("subtitle")}
+                </p>
+              </div>
 
-          <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-300">
-            <span className="rounded-full bg-white/10 px-3 py-1">
-              {years.length} years
-            </span>
-            <span className="rounded-full bg-white/10 px-3 py-1">
-              {regions.length} regions
-            </span>
-            <span className="rounded-full bg-white/10 px-3 py-1">
-              {indicators.length} indicators
-            </span>
+              <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-300">
+                <span className="rounded-full bg-white/10 px-3 py-1">
+                  {years.length} {t("years")}
+                </span>
+                <span className="rounded-full bg-white/10 px-3 py-1">
+                  {regions.length} {t("regions")}
+                </span>
+                <span className="rounded-full bg-white/10 px-3 py-1">
+                  {indicators.length} {t("indicators")}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 self-start rounded-2xl bg-white/10 p-1">
+              <span className="px-2 text-xs font-medium text-slate-300">
+                {t("language")}
+              </span>
+              <button
+                onClick={() => setLang("en")}
+                aria-label="Switch language to English"
+                className={`rounded-xl px-3 py-1.5 text-sm font-medium transition ${
+                  lang === "en"
+                    ? "bg-white text-slate-900"
+                    : "text-white hover:bg-white/10"
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang("ua")}
+                aria-label="Перемкнути мову на українську"
+                className={`rounded-xl px-3 py-1.5 text-sm font-medium transition ${
+                  lang === "ua"
+                    ? "bg-white text-slate-900"
+                    : "text-white hover:bg-white/10"
+                }`}
+              >
+                UA
+              </button>
+            </div>
           </div>
         </header>
 
         <section className="mb-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h2 className="text-lg font-semibold">Filters</h2>
-              <p className="text-sm text-slate-500">
-                Choose a year, region, and indicator to update all widgets.
-              </p>
+              <h2 className="text-lg font-semibold">{t("filters")}</h2>
+              <p className="text-sm text-slate-500">{t("filtersDesc")}</p>
             </div>
 
             <button
               onClick={handleResetFilters}
               className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
             >
-              Reset filters
+              {t("reset")}
             </button>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">
-                Year
+                {t("year")}
               </label>
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
                 className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               >
-                <option value="All">All</option>
+                <option value="All">{t("all")}</option>
                 {years.map((year) => (
                   <option key={year} value={year}>
                     {year}
@@ -186,14 +330,14 @@ function App() {
 
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">
-                Region
+                {t("region")}
               </label>
               <select
                 value={selectedRegion}
                 onChange={(e) => setSelectedRegion(e.target.value)}
                 className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               >
-                <option value="All">All regions</option>
+                <option value="All">{t("allRegions")}</option>
                 {regions.map((region) => (
                   <option key={region} value={region}>
                     {region}
@@ -204,7 +348,7 @@ function App() {
 
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">
-                Indicator
+                {t("indicator")}
               </label>
               <select
                 value={selectedIndicator}
@@ -213,7 +357,7 @@ function App() {
               >
                 {indicators.map((indicator) => (
                   <option key={indicator} value={indicator}>
-                    {indicator}
+                    {getIndicatorLabel(indicator)}
                   </option>
                 ))}
               </select>
@@ -222,13 +366,13 @@ function App() {
 
           <div className="mt-4 flex flex-wrap gap-2">
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-              Year: {selectedYear}
+              {t("year")}: {selectedYear}
             </span>
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-              Region: {selectedRegion}
+              {t("region")}: {selectedRegion}
             </span>
             <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-              Indicator: {selectedIndicator}
+              {t("indicator")}: {getIndicatorLabel(selectedIndicator)}
             </span>
           </div>
         </section>
@@ -238,7 +382,7 @@ function App() {
             <div className="flex items-start justify-between">
               <p className="text-sm text-slate-500">{getKpiLabel()}</p>
               <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
-                KPI
+                {t("kpi")}
               </span>
             </div>
             <p className="mt-3 text-2xl font-bold text-slate-900">
@@ -248,9 +392,9 @@ function App() {
 
           <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-slate-300">
             <div className="flex items-start justify-between">
-              <p className="text-sm text-slate-500">Highest region</p>
+              <p className="text-sm text-slate-500">{t("highestRegion")}</p>
               <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
-                Top region
+                {t("topRegion")}
               </span>
             </div>
             <p className="mt-3 text-2xl font-bold text-slate-900">
@@ -259,15 +403,15 @@ function App() {
             <p className="mt-1 text-sm text-slate-500">
               {maxItem
                 ? formatValue(maxItem.value, activeIndicator)
-                : "No data"}
+                : t("noData")}
             </p>
           </div>
 
           <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-slate-300">
             <div className="flex items-start justify-between">
-              <p className="text-sm text-slate-500">Records count</p>
+              <p className="text-sm text-slate-500">{t("recordsCount")}</p>
               <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700">
-                Count
+                {t("count")}
               </span>
             </div>
             <p className="mt-3 text-2xl font-bold text-slate-900">
@@ -279,10 +423,10 @@ function App() {
         <section className="mb-6 grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
           <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
             <div className="mb-4">
-              <h2 className="text-lg font-semibold">Regional comparison</h2>
-              <p className="text-sm text-slate-500">
-                Main chart based on selected filters.
-              </p>
+              <h2 className="text-lg font-semibold">
+                {t("regionalComparison")}
+              </h2>
+              <p className="text-sm text-slate-500">{t("chartDesc")}</p>
 
               <div className="mt-3 flex flex-wrap gap-2">
                 <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
@@ -292,26 +436,25 @@ function App() {
                   {selectedRegion}
                 </span>
                 <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-                  {selectedIndicator}
+                  {getIndicatorLabel(selectedIndicator)}
                 </span>
               </div>
             </div>
 
             {filteredData.length === 0 ? (
-              <div className="flex h-80 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 text-center">
+              <div className="flex h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 text-center">
                 <div className="mb-4 rounded-full bg-white p-3 shadow-sm ring-1 ring-slate-200">
                   <span className="text-lg">📊</span>
                 </div>
                 <p className="text-base font-semibold text-slate-800">
-                  No chart data available
+                  {t("noChartData")}
                 </p>
                 <p className="mt-2 max-w-sm text-sm text-slate-500">
-                  The selected filters returned no records. Reset filters or
-                  choose another indicator.
+                  {t("noChartDataDesc")}
                 </p>
               </div>
             ) : (
-              <div className="h-80">
+              <div className="h-[320px]">
                 <Bar data={chartData} options={chartOptions} />
               </div>
             )}
@@ -319,16 +462,16 @@ function App() {
 
           <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
             <div className="mb-4">
-              <h2 className="text-lg font-semibold">Current selection</h2>
+              <h2 className="text-lg font-semibold">{t("currentSelection")}</h2>
               <p className="text-sm text-slate-500">
-                Active filter state for this dashboard.
+                {t("currentSelectionDesc")}
               </p>
             </div>
 
             <div className="space-y-3">
               <div className="rounded-xl bg-slate-50 p-4">
                 <p className="text-xs uppercase tracking-wide text-slate-500">
-                  Year
+                  {t("year")}
                 </p>
                 <p className="mt-1 font-semibold text-slate-900">
                   {selectedYear}
@@ -337,7 +480,7 @@ function App() {
 
               <div className="rounded-xl bg-slate-50 p-4">
                 <p className="text-xs uppercase tracking-wide text-slate-500">
-                  Region
+                  {t("region")}
                 </p>
                 <p className="mt-1 font-semibold text-slate-900">
                   {selectedRegion}
@@ -346,10 +489,10 @@ function App() {
 
               <div className="rounded-xl bg-slate-50 p-4">
                 <p className="text-xs uppercase tracking-wide text-slate-500">
-                  Indicator
+                  {t("indicator")}
                 </p>
                 <p className="mt-1 font-semibold text-slate-900">
-                  {selectedIndicator}
+                  {getIndicatorLabel(selectedIndicator)}
                 </p>
               </div>
             </div>
@@ -359,14 +502,13 @@ function App() {
         <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-lg font-semibold">Data table</h2>
-              <p className="text-sm text-slate-500">
-                Filtered records sorted by value.
-              </p>
+              <h2 className="text-lg font-semibold">{t("dataTable")}</h2>
+              <p className="text-sm text-slate-500">{t("tableDesc")}</p>
             </div>
 
             <div className="text-sm text-slate-500">
-              {filteredData.length} result{filteredData.length === 1 ? "" : "s"}
+              {filteredData.length}{" "}
+              {filteredData.length === 1 ? t("result") : t("results")}
             </div>
           </div>
 
@@ -376,17 +518,16 @@ function App() {
                 <span className="text-xl">📭</span>
               </div>
               <p className="text-base font-semibold text-slate-800">
-                No results for current filters
+                {t("noResults")}
               </p>
               <p className="mt-2 text-sm text-slate-500">
-                Try another year, region, or indicator, or reset filters to see
-                all available mock data.
+                {t("noResultsDesc")}
               </p>
               <button
                 onClick={handleResetFilters}
                 className="mt-5 rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
               >
-                Reset filters
+                {t("reset")}
               </button>
             </div>
           ) : (
@@ -394,10 +535,12 @@ function App() {
               <table className="min-w-full text-left text-sm">
                 <thead className="border-b border-slate-200 bg-slate-50 text-slate-600">
                   <tr>
-                    <th className="px-4 py-3 font-semibold">Region</th>
-                    <th className="px-4 py-3 font-semibold">Year</th>
-                    <th className="px-4 py-3 font-semibold">Indicator</th>
-                    <th className="px-4 py-3 font-semibold">Value</th>
+                    <th className="px-4 py-3 font-semibold">{t("region")}</th>
+                    <th className="px-4 py-3 font-semibold">{t("year")}</th>
+                    <th className="px-4 py-3 font-semibold">
+                      {t("indicator")}
+                    </th>
+                    <th className="px-4 py-3 font-semibold">{t("value")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -411,7 +554,7 @@ function App() {
                       </td>
                       <td className="px-4 py-3 text-slate-600">{item.year}</td>
                       <td className="px-4 py-3 text-slate-600">
-                        {item.indicator}
+                        {getIndicatorLabel(item.indicator)}
                       </td>
                       <td className="px-4 py-3 font-semibold text-slate-900">
                         {formatValue(item.value, item.indicator)}
@@ -424,9 +567,7 @@ function App() {
           )}
         </section>
 
-        <footer className="mt-6 text-sm text-slate-500">
-          Source: demo mock data for MVP presentation.
-        </footer>
+        <footer className="mt-6 text-sm text-slate-500">{t("source")}</footer>
       </div>
     </div>
   );
