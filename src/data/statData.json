@@ -1,0 +1,74 @@
+[
+  {
+    "region": "Kyiv",
+    "year": 2024,
+    "indicator": "Average Salary",
+    "value": 24500
+  },
+  {
+    "region": "Lviv",
+    "year": 2024,
+    "indicator": "Average Salary",
+    "value": 21000
+  },
+  {
+    "region": "Kharkiv",
+    "year": 2024,
+    "indicator": "Average Salary",
+    "value": 19800
+  },
+  {
+    "region": "Kyiv",
+    "year": 2024,
+    "indicator": "Unemployment Rate",
+    "value": 6.2
+  },
+  {
+    "region": "Lviv",
+    "year": 2024,
+    "indicator": "Unemployment Rate",
+    "value": 7.1
+  },
+  {
+    "region": "Kharkiv",
+    "year": 2024,
+    "indicator": "Unemployment Rate",
+    "value": 8.4
+  },
+  {
+    "region": "Kyiv",
+    "year": 2023,
+    "indicator": "Average Salary",
+    "value": 22800
+  },
+  {
+    "region": "Lviv",
+    "year": 2023,
+    "indicator": "Average Salary",
+    "value": 19600
+  },
+  {
+    "region": "Kharkiv",
+    "year": 2023,
+    "indicator": "Average Salary",
+    "value": 18500
+  },
+  {
+    "region": "Kyiv",
+    "year": 2023,
+    "indicator": "Unemployment Rate",
+    "value": 6.8
+  },
+  {
+    "region": "Lviv",
+    "year": 2023,
+    "indicator": "Unemployment Rate",
+    "value": 7.5
+  },
+  {
+    "region": "Kharkiv",
+    "year": 2023,
+    "indicator": "Unemployment Rate",
+    "value": 9.1
+  }
+]
