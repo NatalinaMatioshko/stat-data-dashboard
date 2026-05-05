@@ -1,16 +1,65 @@
-# React + Vite
+# Stat Data Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend MVP dashboard built as a test task prototype.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project is a simple statistical dashboard built with React, Vite, Tailwind CSS, and Chart.js.  
+It uses mock JSON data to display basic metrics, filters, a bar chart, and a data table.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- Vite
+- Tailwind CSS
+- Chart.js
+- react-chartjs-2
+- Mock JSON data
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Filter data by year
+- Filter data by region
+- Filter data by indicator
+- Show KPI cards
+- Display bar chart
+- Render filtered data table
+- Reset filters
+
+## Project Structure
+
+```bash
+src/
+  data/
+    statData.json
+  App.jsx
+  main.jsx
+  index.css
+```
+
+## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+## Notes
+
+- This is an MVP version focused on speed and clarity.
+- Data is currently mocked in `src/data/statData.json`.
+- The UI is intentionally simple to support fast iteration.
+
+## Next Steps
+
+- Add better formatting for different indicator types
+- Improve chart labels and tooltips
+- Split UI into reusable components
+- Add responsive polish

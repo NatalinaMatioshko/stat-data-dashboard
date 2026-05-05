@@ -18,6 +18,13 @@
     "value": 19800
   },
   {
+    "region": "Odesa",
+    "year": 2024,
+    "indicator": "Average Salary",
+    "value": 20500
+  },
+
+  {
     "region": "Kyiv",
     "year": 2024,
     "indicator": "Unemployment Rate",
@@ -35,6 +42,38 @@
     "indicator": "Unemployment Rate",
     "value": 8.4
   },
+  {
+    "region": "Odesa",
+    "year": 2024,
+    "indicator": "Unemployment Rate",
+    "value": 7.8
+  },
+
+  {
+    "region": "Kyiv",
+    "year": 2024,
+    "indicator": "Population",
+    "value": 2967000
+  },
+  {
+    "region": "Lviv",
+    "year": 2024,
+    "indicator": "Population",
+    "value": 717000
+  },
+  {
+    "region": "Kharkiv",
+    "year": 2024,
+    "indicator": "Population",
+    "value": 1410000
+  },
+  {
+    "region": "Odesa",
+    "year": 2024,
+    "indicator": "Population",
+    "value": 1015000
+  },
+
   {
     "region": "Kyiv",
     "year": 2023,
@@ -54,6 +93,13 @@
     "value": 18500
   },
   {
+    "region": "Odesa",
+    "year": 2023,
+    "indicator": "Average Salary",
+    "value": 19100
+  },
+
+  {
     "region": "Kyiv",
     "year": 2023,
     "indicator": "Unemployment Rate",
@@ -70,5 +116,36 @@
     "year": 2023,
     "indicator": "Unemployment Rate",
     "value": 9.1
+  },
+  {
+    "region": "Odesa",
+    "year": 2023,
+    "indicator": "Unemployment Rate",
+    "value": 8.3
+  },
+
+  {
+    "region": "Kyiv",
+    "year": 2023,
+    "indicator": "Population",
+    "value": 2951000
+  },
+  {
+    "region": "Lviv",
+    "year": 2023,
+    "indicator": "Population",
+    "value": 712000
+  },
+  {
+    "region": "Kharkiv",
+    "year": 2023,
+    "indicator": "Population",
+    "value": 1435000
+  },
+  {
+    "region": "Odesa",
+    "year": 2023,
+    "indicator": "Population",
+    "value": 1010000
   }
 ]

@@ -6,7 +6,7 @@ import "chart.js/auto";
 function App() {
   const [selectedYear, setSelectedYear] = useState("2024");
   const [selectedRegion, setSelectedRegion] = useState("All");
-  const [selectedIndicator, setSelectedIndicator] = useState("All");
+  const [selectedIndicator, setSelectedIndicator] = useState("Average Salary");
 
   const years = [...new Set(data.map((item) => item.year))].sort(
     (a, b) => b - a,
@@ -27,18 +27,43 @@ function App() {
     })
     .sort((a, b) => b.value - a.value);
 
+  const getIndicatorType = (indicator) => {
+    if (indicator === "Unemployment Rate") return "percent";
+    if (indicator === "Average Salary") return "number";
+    if (indicator === "Population") return "number";
+    return "number";
+  };
+
+  const formatValue = (value, indicator) => {
+    const type = getIndicatorType(indicator);
+
+    if (type === "percent") {
+      return `${value.toFixed(1)}%`;
+    }
+
+    return value.toLocaleString();
+  };
+
+  const getKpiLabel = () => {
+    if (selectedIndicator === "Unemployment Rate") return "Average rate";
+    if (selectedIndicator === "Population") return "Average population";
+    return "Average value";
+  };
+
   const totalValue = filteredData.reduce((sum, item) => sum + item.value, 0);
-  const avgValue = filteredData.length
-    ? Math.round(totalValue / filteredData.length)
-    : 0;
+  const avgValue = filteredData.length ? totalValue / filteredData.length : 0;
   const maxItem = filteredData.length ? filteredData[0] : null;
+
+  const activeIndicator =
+    selectedIndicator === "All"
+      ? filteredData[0]?.indicator || "Indicator value"
+      : selectedIndicator;
 
   const chartData = {
     labels: filteredData.map((item) => item.region),
     datasets: [
       {
-        label:
-          selectedIndicator === "All" ? "Indicator value" : selectedIndicator,
+        label: activeIndicator,
         data: filteredData.map((item) => item.value),
         backgroundColor: "#2563eb",
         borderRadius: 10,
@@ -56,7 +81,7 @@ function App() {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.raw.toLocaleString()}`,
+          label: (context) => formatValue(context.raw, activeIndicator),
         },
       },
     },
@@ -69,7 +94,12 @@ function App() {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: (value) => Number(value).toLocaleString(),
+          callback: (value) => {
+            if (activeIndicator === "Unemployment Rate") {
+              return `${value}%`;
+            }
+            return Number(value).toLocaleString();
+          },
         },
       },
     },
@@ -78,7 +108,7 @@ function App() {
   const handleResetFilters = () => {
     setSelectedYear("2024");
     setSelectedRegion("All");
-    setSelectedIndicator("All");
+    setSelectedIndicator("Average Salary");
   };
 
   return (
@@ -168,7 +198,6 @@ function App() {
                 onChange={(e) => setSelectedIndicator(e.target.value)}
                 className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               >
-                <option value="All">All indicators</option>
                 {indicators.map((indicator) => (
                   <option key={indicator} value={indicator}>
                     {indicator}
@@ -181,9 +210,9 @@ function App() {
 
         <section className="mb-6 grid gap-4 md:grid-cols-3">
           <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm text-slate-500">Average value</p>
+            <p className="text-sm text-slate-500">{getKpiLabel()}</p>
             <p className="mt-2 text-2xl font-bold text-slate-900">
-              {avgValue.toLocaleString()}
+              {formatValue(avgValue, activeIndicator)}
             </p>
           </div>
 
@@ -193,7 +222,9 @@ function App() {
               {maxItem ? maxItem.region : "—"}
             </p>
             <p className="mt-1 text-sm text-slate-500">
-              {maxItem ? maxItem.value.toLocaleString() : "No data"}
+              {maxItem
+                ? formatValue(maxItem.value, activeIndicator)
+                : "No data"}
             </p>
           </div>
 
@@ -312,7 +343,7 @@ function App() {
                         {item.indicator}
                       </td>
                       <td className="px-4 py-3 font-semibold text-slate-900">
-                        {item.value.toLocaleString()}
+                        {formatValue(item.value, item.indicator)}
                       </td>
                     </tr>
                   ))}
