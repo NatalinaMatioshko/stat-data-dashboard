@@ -38,10 +38,10 @@ function App() {
     const type = getIndicatorType(indicator);
 
     if (type === "percent") {
-      return `${value.toFixed(1)}%`;
+      return `${Number(value).toFixed(1)}%`;
     }
 
-    return value.toLocaleString();
+    return Number(value).toLocaleString();
   };
 
   const getKpiLabel = () => {
@@ -81,7 +81,8 @@ function App() {
       },
       tooltip: {
         callbacks: {
-          label: (context) => formatValue(context.raw, activeIndicator),
+          label: (context) =>
+            `${activeIndicator}: ${formatValue(context.raw, activeIndicator)}`,
         },
       },
     },
@@ -114,7 +115,7 @@ function App() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <header className="mb-8 flex flex-col gap-4 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white shadow-sm">
+        <header className="mb-8 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white shadow-sm">
           <div className="flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-200">
               Demo MVP
@@ -124,7 +125,7 @@ function App() {
             </span>
           </div>
 
-          <div>
+          <div className="mt-4">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Stat Data Dashboard
             </h1>
@@ -133,10 +134,22 @@ function App() {
               region, and indicator.
             </p>
           </div>
+
+          <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-300">
+            <span className="rounded-full bg-white/10 px-3 py-1">
+              {years.length} years
+            </span>
+            <span className="rounded-full bg-white/10 px-3 py-1">
+              {regions.length} regions
+            </span>
+            <span className="rounded-full bg-white/10 px-3 py-1">
+              {indicators.length} indicators
+            </span>
+          </div>
         </header>
 
-        <section className="mb-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-          <div className="mb-4 flex items-center justify-between gap-3">
+        <section className="mb-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold">Filters</h2>
               <p className="text-sm text-slate-500">
@@ -206,19 +219,41 @@ function App() {
               </select>
             </div>
           </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+              Year: {selectedYear}
+            </span>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+              Region: {selectedRegion}
+            </span>
+            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+              Indicator: {selectedIndicator}
+            </span>
+          </div>
         </section>
 
         <section className="mb-6 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm text-slate-500">{getKpiLabel()}</p>
-            <p className="mt-2 text-2xl font-bold text-slate-900">
+          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-slate-300">
+            <div className="flex items-start justify-between">
+              <p className="text-sm text-slate-500">{getKpiLabel()}</p>
+              <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
+                KPI
+              </span>
+            </div>
+            <p className="mt-3 text-2xl font-bold text-slate-900">
               {formatValue(avgValue, activeIndicator)}
             </p>
           </div>
 
-          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm text-slate-500">Highest region</p>
-            <p className="mt-2 text-2xl font-bold text-slate-900">
+          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-slate-300">
+            <div className="flex items-start justify-between">
+              <p className="text-sm text-slate-500">Highest region</p>
+              <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                Top region
+              </span>
+            </div>
+            <p className="mt-3 text-2xl font-bold text-slate-900">
               {maxItem ? maxItem.region : "—"}
             </p>
             <p className="mt-1 text-sm text-slate-500">
@@ -228,26 +263,52 @@ function App() {
             </p>
           </div>
 
-          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm text-slate-500">Records count</p>
-            <p className="mt-2 text-2xl font-bold text-slate-900">
+          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-slate-300">
+            <div className="flex items-start justify-between">
+              <p className="text-sm text-slate-500">Records count</p>
+              <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700">
+                Count
+              </span>
+            </div>
+            <p className="mt-3 text-2xl font-bold text-slate-900">
               {filteredData.length}
             </p>
           </div>
         </section>
 
         <section className="mb-6 grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
-          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
             <div className="mb-4">
               <h2 className="text-lg font-semibold">Regional comparison</h2>
               <p className="text-sm text-slate-500">
                 Main chart based on selected filters.
               </p>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                  {selectedYear}
+                </span>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                  {selectedRegion}
+                </span>
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                  {selectedIndicator}
+                </span>
+              </div>
             </div>
 
             {filteredData.length === 0 ? (
-              <div className="flex h-[320px] items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 text-center text-slate-500">
-                No chart data available for current filters.
+              <div className="flex h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 text-center">
+                <div className="mb-4 rounded-full bg-white p-3 shadow-sm ring-1 ring-slate-200">
+                  <span className="text-lg">📊</span>
+                </div>
+                <p className="text-base font-semibold text-slate-800">
+                  No chart data available
+                </p>
+                <p className="mt-2 max-w-sm text-sm text-slate-500">
+                  The selected filters returned no records. Reset filters or
+                  choose another indicator.
+                </p>
               </div>
             ) : (
               <div className="h-[320px]">
@@ -256,7 +317,7 @@ function App() {
             )}
           </div>
 
-          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
             <div className="mb-4">
               <h2 className="text-lg font-semibold">Current selection</h2>
               <p className="text-sm text-slate-500">
@@ -295,7 +356,7 @@ function App() {
           </div>
         </section>
 
-        <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+        <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition duration-200 hover:shadow-md">
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold">Data table</h2>
@@ -310,13 +371,23 @@ function App() {
           </div>
 
           {filteredData.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
-              <p className="text-base font-medium text-slate-700">
-                No results match your current filters.
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200">
+                <span className="text-xl">📭</span>
+              </div>
+              <p className="text-base font-semibold text-slate-800">
+                No results for current filters
               </p>
               <p className="mt-2 text-sm text-slate-500">
-                Try changing the year, region, or indicator selection.
+                Try another year, region, or indicator, or reset filters to see
+                all available mock data.
               </p>
+              <button
+                onClick={handleResetFilters}
+                className="mt-5 rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+              >
+                Reset filters
+              </button>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -333,7 +404,7 @@ function App() {
                   {filteredData.map((item, index) => (
                     <tr
                       key={`${item.region}-${item.year}-${item.indicator}-${index}`}
-                      className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50"
+                      className="border-b border-slate-100 transition hover:bg-slate-50 last:border-b-0"
                     >
                       <td className="px-4 py-3 font-medium text-slate-800">
                         {item.region}

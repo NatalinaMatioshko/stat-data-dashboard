@@ -1,11 +1,16 @@
 # Stat Data Dashboard
 
-Frontend MVP dashboard built as a test task prototype.
+A simple frontend MVP dashboard built with React, Vite, Tailwind CSS, and Chart.js.
 
 ## Overview
 
-This project is a simple statistical dashboard built with React, Vite, Tailwind CSS, and Chart.js.  
-It uses mock JSON data to display basic metrics, filters, a bar chart, and a data table.
+This project is a demo statistical dashboard for exploring mock public data by:
+
+- year
+- region
+- indicator
+
+It includes filters, KPI cards, a bar chart, and a responsive data table.
 
 ## Tech Stack
 
@@ -14,17 +19,17 @@ It uses mock JSON data to display basic metrics, filters, a bar chart, and a dat
 - Tailwind CSS
 - Chart.js
 - react-chartjs-2
-- Mock JSON data
 
 ## Features
 
 - Filter data by year
 - Filter data by region
 - Filter data by indicator
-- Show KPI cards
-- Display bar chart
-- Render filtered data table
-- Reset filters
+- KPI summary cards
+- Bar chart with formatted values
+- Active filter chips
+- Empty state with reset action
+- Responsive demo layout
 
 ## Project Structure
 
@@ -45,21 +50,43 @@ Install dependencies:
 npm install
 ```
 
-Run the development server:
+Run locally:
 
 ```bash
 npm run dev
 ```
 
-## Notes
+Build for production:
 
-- This is an MVP version focused on speed and clarity.
-- Data is currently mocked in `src/data/statData.json`.
-- The UI is intentionally simple to support fast iteration.
+```bash
+npm run build
+```
 
-## Next Steps
+## Demo Data
 
-- Add better formatting for different indicator types
-- Improve chart labels and tooltips
-- Split UI into reusable components
-- Add responsive polish
+The project currently uses mock data stored in:
+
+```bash
+src/data/statData.json
+```
+
+Each record includes:
+
+- `region`
+- `year`
+- `indicator`
+- `value`
+
+## Deployment
+
+This project can be deployed easily on Vercel.
+
+Recommended build settings:
+
+- Framework Preset: Vite
+- Build Command: `npm run build`
+- Output Directory: `dist`
+
+## Status
+
+MVP / test task demo version.
