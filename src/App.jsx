@@ -115,7 +115,7 @@ function App() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <header className="mb-8 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white shadow-sm">
+        <header className="mb-8 rounded-3xl bg-linear-to-r from-slate-900 to-slate-800 p-6 text-white shadow-sm">
           <div className="flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-200">
               Demo MVP
@@ -298,7 +298,7 @@ function App() {
             </div>
 
             {filteredData.length === 0 ? (
-              <div className="flex h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 text-center">
+              <div className="flex h-80 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 text-center">
                 <div className="mb-4 rounded-full bg-white p-3 shadow-sm ring-1 ring-slate-200">
                   <span className="text-lg">📊</span>
                 </div>
@@ -311,7 +311,7 @@ function App() {
                 </p>
               </div>
             ) : (
-              <div className="h-[320px]">
+              <div className="h-80">
                 <Bar data={chartData} options={chartOptions} />
               </div>
             )}

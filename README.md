@@ -12,6 +12,10 @@ This project is a demo statistical dashboard for exploring mock public data by:
 
 It includes filters, KPI cards, a bar chart, and a responsive data table.
 
+## Live Demo
+
+https://stat-data-dashboard.vercel.app/
+
 ## Tech Stack
 
 - React
